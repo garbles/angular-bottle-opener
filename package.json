@@ -1,0 +1,37 @@
+{
+  "name": "angular-bottle-opener",
+  "version": "0.0.1",
+  "description": "An AngularJS wrapper for localStorage",
+  "main": "./bottleOpener.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/garbles/angular-bottle-opener.git"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "keywords": [
+    "angular",
+    "local",
+    "storage",
+    "bottle",
+    "opener"
+  ],
+  "author": "Gabriel Scholz <gabe.scholz@zozi.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/garbles/angular-bottle-opener/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-karma": "~0.4.3",
+    "karma": "~0.10.1",
+    "karma-chrome-launcher": "~0.1.0",
+    "karma-jasmine": "~0.1.0"
+  }
+}
