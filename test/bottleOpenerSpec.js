@@ -26,7 +26,7 @@ describe('Service: $bottle', function () {
     data = {a:1};
     dataStr = angular.toJson({data: data});
 
-    $bottle(key).store('data', data);
+    $bottle(key).set('data', data);
 
     expect(localStorage[key]).toBe(dataStr);
   });
@@ -37,8 +37,8 @@ describe('Service: $bottle', function () {
     bottle = $bottle('test3');
     data = {a:1};
 
-    bottle.store('data', data);
+    bottle.set('data', data);
 
-    expect(bottle.retrieve('data')).toBe(data);
+    expect(bottle.get('data')).toBe(data);
   });
 });

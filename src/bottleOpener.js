@@ -17,17 +17,13 @@ angular.module('bottle.opener', [])
         storage = angular.fromJson(_get());
       }
 
-      function store(slug, json) {
+      function set(slug, json) {
         storage[slug] = json;
         _set(angular.toJson(storage));
       }
 
-      function retrieve(slug, callback) {
-        if (storage[slug]) {
-          return storage[slug];
-        } else if (typeof callback == 'function') {
-          return callback();
-        }
+      function get(slug) {
+        return storage[slug];
       }
 
       _get() || _set("{}");
@@ -36,8 +32,8 @@ angular.module('bottle.opener', [])
 
       return {
         initialize: initialize,
-        store: store,
-        retrieve: retrieve
+        set: set,
+        get: get
       };
     }
   });
