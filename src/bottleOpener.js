@@ -13,6 +13,20 @@ angular.module('bottle.opener', [])
         return localStorage.setItem(key, data);
       }
 
+      function all() {
+        return storage;
+      }
+
+      function clean() {
+        storage = {};
+        _set("{}");
+        return api;
+      }
+
+      function get(slug) {
+        return storage[slug];
+      }
+
       function initialize() {
         storage = angular.fromJson(_get());
         return api;
@@ -24,18 +38,16 @@ angular.module('bottle.opener', [])
         return api;
       }
 
-      function get(slug) {
-        return storage[slug];
-      }
-
       _get() || _set("{}");
 
       initialize();
 
       api = {
+        all: all,
+        clean: clean,
         initialize: initialize,
-        set: set,
-        get: get
+        get: get,
+        set: set
       };
 
       return api;
