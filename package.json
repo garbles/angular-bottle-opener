@@ -1,6 +1,6 @@
 {
   "name": "angular-bottle-opener",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An AngularJS wrapper for localStorage",
   "main": "./build/bottleOpener.js",
   "directories": {
@@ -20,7 +20,7 @@
     "bottle",
     "opener"
   ],
-  "author": "Gabriel Scholz <gabe.scholz@zozi.com>",
+  "author": "Gabriel Scholz <scholz.gabe@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/garbles/angular-bottle-opener/issues"
