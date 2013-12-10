@@ -18,7 +18,7 @@ angular.module('bottle.opener', [])
       }
 
       function clean() {
-        storage = {};
+        storage = angular.fromJson("{}");
         _set("{}");
         return api;
       }
@@ -38,10 +38,6 @@ angular.module('bottle.opener', [])
         return api;
       }
 
-      _get() || _set("{}");
-
-      initialize();
-
       api = {
         all: all,
         clean: clean,
@@ -49,6 +45,10 @@ angular.module('bottle.opener', [])
         get: get,
         set: set
       };
+
+      _get() || _set("{}");
+
+      initialize();
 
       return api;
     }
