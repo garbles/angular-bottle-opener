@@ -3,7 +3,7 @@
 angular.module('bottle.opener', [])
   .service('$bottle', function () {
     return function(key) {
-      var storage;
+      var storage, api;
 
       function _get() {
         return localStorage.getItem(key);
@@ -15,11 +15,13 @@ angular.module('bottle.opener', [])
 
       function initialize() {
         storage = angular.fromJson(_get());
+        return api;
       }
 
       function set(slug, json) {
         storage[slug] = json;
         _set(angular.toJson(storage));
+        return api;
       }
 
       function get(slug) {
@@ -30,11 +32,13 @@ angular.module('bottle.opener', [])
 
       initialize();
 
-      return {
+      api = {
         initialize: initialize,
         set: set,
         get: get
       };
+
+      return api;
     }
   });
 
