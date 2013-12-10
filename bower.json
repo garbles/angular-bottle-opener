@@ -5,7 +5,7 @@
     "Gabriel Scholz <gabe.scholz@zozi.com>"
   ],
   "description": "An AngularJS wrapper for localStorage",
-  "main": "./bottleOpener.js",
+  "main": "./build/bottleOpener.js",
   "keywords": [
     "angular",
     "local",

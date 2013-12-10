@@ -2,7 +2,7 @@
   "name": "angular-bottle-opener",
   "version": "0.0.1",
   "description": "An AngularJS wrapper for localStorage",
-  "main": "./bottleOpener.js",
+  "main": "./build/bottleOpener.js",
   "directories": {
     "test": "test"
   },
@@ -27,11 +27,14 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-karma": "~0.4.3",
+    "load-grunt-tasks": "~0.2.0",
     "karma": "~0.10.1",
     "karma-chrome-launcher": "~0.1.0",
-    "karma-jasmine": "~0.1.0"
+    "karma-jasmine": "~0.1.0",
+    "grunt": "~0.4.2",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-karma": "~0.4.3",
+    "grunt-ngmin": "0.0.3"
   }
 }

@@ -1,0 +1,1 @@
+"use strict";angular.module("bottle.opener",[]).service("$bottle",["$http",function(){return function(a){function b(){e=angular.fromJson(localStorage[a])}function c(b,c){e[b]=c,localStorage[a]=angular.toJson(e)}function d(a,b){return e[a]?e[a]:"function"==typeof b?b():void 0}var e;return localStorage[a]||(localStorage[a]="{}"),b(),{initialize:b,store:c,retrieve:d}}}]);
