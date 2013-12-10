@@ -5,15 +5,21 @@ angular.module('bottle.opener', [])
     return function(key) {
       var storage;
 
-      localStorage[key] || (localStorage[key] = "{}");
+      function _get() {
+        return localStorage.getItem(key);
+      }
+
+      function _set(data) {
+        return localStorage.setItem(key, data);
+      }
 
       function initialize() {
-        storage = angular.fromJson(localStorage[key]);
+        storage = angular.fromJson(_get());
       }
 
       function store(slug, json) {
         storage[slug] = json;
-        localStorage[key] = angular.toJson(storage);
+        _set(angular.toJson(storage));
       }
 
       function retrieve(slug, callback) {
@@ -23,6 +29,8 @@ angular.module('bottle.opener', [])
           return callback();
         }
       }
+
+      _get() || _set("{}");
 
       initialize();
 
