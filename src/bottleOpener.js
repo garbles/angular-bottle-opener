@@ -2,18 +2,19 @@
 
 angular.module('bottle.opener', [])
   .service('$bottle', function () {
+
+    function _get(key) {
+      return localStorage.getItem(key);
+    }
+
+    function _set(key, data) {
+      localStorage.setItem(key, data);
+      return data;
+    }
+
     function Bottle(args) {
       this.key = args.key;
-      this.storage = angular.fromJson(this._get());
-      this;
-    }
-
-    Bottle.prototype._get = function() {
-      return localStorage.getItem(this.key);
-    }
-
-    Bottle.prototype._set = function(data) {
-      return localStorage.setItem(this.key, data);
+      this.storage = angular.fromJson(_get(this.key) || _set(this.key, "{}"));
     }
 
     Bottle.prototype.all = function() {
@@ -22,7 +23,7 @@ angular.module('bottle.opener', [])
 
     Bottle.prototype.clean = function() {
       this.storage = angular.fromJson("{}");
-      this._set("{}");
+      _set(this.key, "{}");
       return this;
     }
 
@@ -32,7 +33,7 @@ angular.module('bottle.opener', [])
 
     Bottle.prototype.set = function(slug, json) {
       this.storage[slug] = json;
-      this._set(angular.toJson(this.storage));
+      _set(this.key, angular.toJson(this.storage));
       return this;
     }
 
