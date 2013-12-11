@@ -10,7 +10,7 @@ describe('Service: $bottle', function () {
 
   beforeEach(inject(function (_$bottle_) {
     $bottle = _$bottle_;
-    bottle = $bottle('test').clean();
+    bottle = $bottle({key: 'test'}).clean();
   }));
 
   it('initializes local storage', function () {

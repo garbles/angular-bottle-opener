@@ -2,8 +2,8 @@
 
 angular.module('bottle.opener', [])
   .service('$bottle', function () {
-    function Bottle(key) {
-      this.key = key;
+    function Bottle(args) {
+      this.key = args.key;
       this.storage = angular.fromJson(this._get());
       this;
     }
@@ -36,8 +36,7 @@ angular.module('bottle.opener', [])
       return this;
     }
 
-    return function(key) {
-      return new Bottle(key);
+    return function(args) {
+      return new Bottle(args);
     }
   });
-
