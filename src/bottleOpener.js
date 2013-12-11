@@ -1,7 +1,16 @@
 'use strict';
 
 angular.module('bottle.opener', [])
-  .service('$bottle', function ($http, $q) {
+  .provider('$bottle', function () {
+    var $http, $q;
+
+    this.$get = ['$http', '$q', function(http, q) {
+      $http = http, $q = q;
+
+      return function(args) {
+        return new Bottle(args);
+      }
+    }]
 
     function _get(key) {
       return localStorage.getItem(key);
@@ -48,9 +57,5 @@ angular.module('bottle.opener', [])
       this.storage[slug] = json;
       _set(this.key, angular.toJson(this.storage));
       return this;
-    }
-
-    return function(args) {
-      return new Bottle(args);
     }
   });
