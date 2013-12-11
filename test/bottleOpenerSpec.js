@@ -1,15 +1,18 @@
 'use strict';
 
 describe('Service: $bottle', function () {
-  var $bottle, bottle, key, data;
+  var $bottle, bottle, key, data, otherData, api;
 
   key = 'key';
   data = {a:1};
+  otherData = {b: 1}
+  api = 'http://www.example.com/api/';
 
   beforeEach(module('bottle.opener'));
 
-  beforeEach(inject(function (_$bottle_) {
+  beforeEach(inject(function (_$bottle_, $httpBackend) {
     $bottle = _$bottle_;
+    $httpBackend.when('GET', api + 'derp').respond(otherData);
     bottle = $bottle({key: 'test'}).clean();
   }));
 
@@ -41,5 +44,12 @@ describe('Service: $bottle', function () {
     bottle.set(key, data).set('other_key', data);
 
     expect(bottle.all()).toEqual({"key": data, "other_key": data});
+  });
+
+  it('calls an api if .api', function() {
+    bottle.api = api;
+    bottle.get('derp', function(result) {
+      expect(result.data).toBe(otherData);
+    })
   });
 });

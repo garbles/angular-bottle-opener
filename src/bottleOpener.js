@@ -44,13 +44,12 @@ angular.module('bottle.opener', [])
 
       if (data = this.storage[slug]) {
         deferred.resolve({data: data, status: 200});
-        return deferred.promise;
       } else if(typeof this.api == 'string') {
         return $http.get(this.api + slug);
       } else {
         deferred.resolve({});
-        return deferred.promise;
       }
+      return deferred.promise;
     }
 
     Bottle.prototype.set = function(slug, json) {
