@@ -2,55 +2,42 @@
 
 angular.module('bottle.opener', [])
   .service('$bottle', function () {
+    function Bottle(key) {
+      this.key = key;
+      this.storage = angular.fromJson(this._get());
+      this;
+    }
+
+    Bottle.prototype._get = function() {
+      return localStorage.getItem(this.key);
+    }
+
+    Bottle.prototype._set = function(data) {
+      return localStorage.setItem(this.key, data);
+    }
+
+    Bottle.prototype.all = function() {
+      return this.storage;
+    }
+
+    Bottle.prototype.clean = function() {
+      this.storage = angular.fromJson("{}");
+      this._set("{}");
+      return this;
+    }
+
+    Bottle.prototype.get = function(slug) {
+      return this.storage[slug];
+    }
+
+    Bottle.prototype.set = function(slug, json) {
+      this.storage[slug] = json;
+      this._set(angular.toJson(this.storage));
+      return this;
+    }
+
     return function(key) {
-      var storage, api;
-
-      function _get() {
-        return localStorage.getItem(key);
-      }
-
-      function _set(data) {
-        return localStorage.setItem(key, data);
-      }
-
-      function all() {
-        return storage;
-      }
-
-      function clean() {
-        storage = angular.fromJson("{}");
-        _set("{}");
-        return api;
-      }
-
-      function get(slug) {
-        return storage[slug];
-      }
-
-      function initialize() {
-        storage = angular.fromJson(_get());
-        return api;
-      }
-
-      function set(slug, json) {
-        storage[slug] = json;
-        _set(angular.toJson(storage));
-        return api;
-      }
-
-      api = {
-        all: all,
-        clean: clean,
-        initialize: initialize,
-        get: get,
-        set: set
-      };
-
-      _get() || _set("{}");
-
-      initialize();
-
-      return api;
+      return new Bottle(key);
     }
   });
 
