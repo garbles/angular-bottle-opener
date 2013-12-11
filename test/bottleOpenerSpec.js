@@ -25,8 +25,14 @@ describe('Service: $bottle', function () {
     });
   });
 
+  it('returns an empty object if the slug is not found', function() {
+    bottle.get('derp').then(function(result) {
+      expect(result.data).toBeUndefined();
+    })
+  });
+
   it('allows you to chain commands together', function() {
-    bottle.set(key, data).get(key).then(function(result){
+    bottle.set(key, data).get(key).then(function(result) {
       expect(result.data).toBe(data);
     });
   });

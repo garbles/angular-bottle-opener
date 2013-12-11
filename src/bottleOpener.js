@@ -38,6 +38,9 @@ angular.module('bottle.opener', [])
         return deferred.promise;
       } else if(typeof this.api == 'string') {
         return $http.get(this.api + slug);
+      } else {
+        deferred.resolve({});
+        return deferred.promise;
       }
     }
 
