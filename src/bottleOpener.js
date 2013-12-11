@@ -10,7 +10,7 @@ angular.module('bottle.opener', [])
       return function(args) {
         return new Bottle(args);
       }
-    }]
+    }];
 
     function _get(key) {
       return localStorage.getItem(key);
