@@ -20,11 +20,15 @@ describe('Service: $bottle', function () {
   it('stores and retrieves local storage data', function() {
     bottle.set(key, data);
 
-    expect(bottle.get(key)).toBe(data);
+    bottle.get(key).then(function(result) {
+      expect(result.data).toBe(data);
+    });
   });
 
   it('allows you to chain commands together', function() {
-    expect(bottle.set(key, data).get(key)).toBe(data);
+    bottle.set(key, data).get(key).then(function(result){
+      expect(result.data).toBe(data);
+    });
   });
 
   it('returns all of the data from the bottle', function() {

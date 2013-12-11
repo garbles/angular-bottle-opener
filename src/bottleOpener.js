@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bottle.opener', [])
-  .service('$bottle', function () {
+  .service('$bottle', function ($http, $q) {
 
     function _get(key) {
       return localStorage.getItem(key);
@@ -14,6 +14,7 @@ angular.module('bottle.opener', [])
 
     function Bottle(args) {
       this.key = args.key;
+      this.api = args.api;
       this.storage = angular.fromJson(_get(this.key) || _set(this.key, "{}"));
     }
 
@@ -28,7 +29,16 @@ angular.module('bottle.opener', [])
     }
 
     Bottle.prototype.get = function(slug) {
-      return this.storage[slug];
+      var data, deferred;
+
+      deferred = $q.defer();
+
+      if (data = this.storage[slug]) {
+        deferred.resolve({data: data, status: 200});
+        return deferred.promise;
+      } else if(typeof this.api == 'string') {
+        return $http.get(this.api + slug);
+      }
     }
 
     Bottle.prototype.set = function(slug, json) {
