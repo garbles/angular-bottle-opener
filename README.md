@@ -1,6 +1,5 @@
 # angular-bottle-opener
 
-
 Store and retrieve object data from your browser's localStorage with bottleOpener.
 Its motivation is an attempt to minimize the number of http requests made to your
 server during a page load by storing non-sensitive, rarely/never-updated data on the client's localStorage.
@@ -19,12 +18,12 @@ You can store key-value pairs (or key-object pairs if you prefer) in your localS
 ```javascript
 angular.module('app')
   .controller('ctrl', function($scope,$bottle) {
-    $scope.data = {"test": "data"};
+    $scope.data = {'test': 'data'};
 
     // find or create a bottle with the name `example`
-    var bottle = $bottle({"key": "example"});
+    var bottle = $bottle('example');
 
-    bottle.set('bacon', $scope.data); // => {"test": "data"}
+    bottle.set('bacon', $scope.data); // => {'test': 'data'}
   });
 ```
 
@@ -33,12 +32,12 @@ Retrieving data is accomplished with `get` and always returns a promise.
 ```javascript
 angular.module('app')
   .controller('ctrl', function($scope, $bottle) {
-    var bottle = $bottle({"key": "example"});
+    var bottle = $bottle('example');
 
     bottle.get('bacon').then(function(result){
 
       // once the promise is resolved, assign it to something.
-      $scope.otherData = result.data; // => {"test": "data"}
+      $scope.otherData = result.data; // => {'test': 'data'}
     });
   });
 ```
@@ -51,7 +50,7 @@ angular.module('app')
   .controller('ctrl', function($scope, $bottle) {
 
     // :slug param required
-    var bottle = $bottle({"key": "example", "api": "http://www.example.com/api/:slug"});
+    var bottle = $bottle('example', {'api': 'http://www.example.com/api/:slug'});
 
     // will create an http request for http://www.example.com/api/other-bacon
     bottle.get('other-bacon').then(function(result) {

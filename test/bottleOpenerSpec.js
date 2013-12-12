@@ -13,8 +13,8 @@ describe('Service: $bottle', function () {
   beforeEach(inject(function (_$bottle_, _$httpBackend_) {
     $bottle = _$bottle_;
     $httpBackend = _$httpBackend_;
-    $httpBackend.when('GET', api + 'derp').respond(otherData);
-    bottle = $bottle({key: 'test'}).clean();
+    $httpBackend.when('GET', api + 'success').respond(otherData);
+    bottle = $bottle('test').clean();
   }));
 
   afterEach(function() {
@@ -53,8 +53,8 @@ describe('Service: $bottle', function () {
   });
 
   it('calls an api if .api', function() {
-    var key = 'derp';
-    bottle.api = api;
+    var key = 'success';
+    bottle.api = api + ':slug';
 
     $httpBackend.expectGET(api + key);
 
@@ -64,5 +64,4 @@ describe('Service: $bottle', function () {
 
     $httpBackend.flush();
   });
-
 });

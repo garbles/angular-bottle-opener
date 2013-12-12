@@ -2,12 +2,28 @@
 
 angular.module('bottle.opener', [])
   .provider('$bottle', function () {
+
+    function _formatUrl(apiUrl, slug) {
+      return apiUrl.split(':slug').join(slug);
+    }
+
+    function _get(key) {
+      return localStorage.getItem(key);
+    }
+
+    function _set(key, data) {
+      localStorage.setItem(key, data);
+      return data;
+    }
+
     this.$get = ['$http', '$q', function($http, $q) {
 
-      function Bottle(args) {
-        this.key = args.key;
-        this.api = args.api;
-        this.storage = angular.fromJson(_get(this.key) || _set(this.key, "{}"));
+      function Bottle(key, opts) {
+        opts || (opts = {});
+
+        this.key = key;
+        this.api = opts.api;
+        this.storage = angular.fromJson(_get(this.key) || _set(this.key, '{}'));
       }
 
       Bottle.prototype.all = function() {
@@ -15,14 +31,14 @@ angular.module('bottle.opener', [])
       }
 
       Bottle.prototype.clean = function() {
-        this.storage = angular.fromJson("{}");
-        _set(this.key, "{}");
+        this.storage = angular.fromJson('{}');
+        _set(this.key, '{}');
 
         return this;
       }
 
       Bottle.prototype.get = function(slug) {
-        var data, deferred;
+        var data, deferred, url;
 
         deferred = $q.defer();
 
@@ -30,7 +46,8 @@ angular.module('bottle.opener', [])
           deferred.resolve({data: data});
         }
         else if(typeof this.api != 'undefined') {
-          $http.get(this.api + slug).then(deferred.resolve);
+          url = _formatUrl(this.api, slug);
+          $http.get(url).then(deferred.resolve);
         }
         else {
           deferred.reject({});
@@ -46,17 +63,8 @@ angular.module('bottle.opener', [])
         return this;
       }
 
-      function _get(key) {
-        return localStorage.getItem(key);
-      }
-
-      function _set(key, data) {
-        localStorage.setItem(key, data);
-        return data;
-      }
-
-      return function(args) {
-        return new Bottle(args);
+      return function(key, opts) {
+        return new Bottle(key, opts);
       }
     }];
 
