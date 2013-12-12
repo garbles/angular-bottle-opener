@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Service: $bottle', function () {
-  var $bottle, bottle, key, data, otherData, api;
+  var $bottle, $httpBackend, bottle, key, data, otherData, api;
 
   key = 'key';
   data = {a:1};
@@ -10,11 +10,17 @@ describe('Service: $bottle', function () {
 
   beforeEach(module('bottle.opener'));
 
-  beforeEach(inject(function (_$bottle_, $httpBackend) {
+  beforeEach(inject(function (_$bottle_, _$httpBackend_) {
     $bottle = _$bottle_;
+    $httpBackend = _$httpBackend_;
     $httpBackend.when('GET', api + 'derp').respond(otherData);
     bottle = $bottle({key: 'test'}).clean();
   }));
+
+  afterEach(function() {
+     $httpBackend.verifyNoOutstandingExpectation();
+     $httpBackend.verifyNoOutstandingRequest();
+   });
 
   it('initializes local storage', function () {
     expect(localStorage.getItem('test')).toBe('{}');
@@ -47,9 +53,16 @@ describe('Service: $bottle', function () {
   });
 
   it('calls an api if .api', function() {
+    var key = 'derp';
     bottle.api = api;
-    bottle.get('derp', function(result) {
-      expect(result.data).toBe(otherData);
-    })
+
+    $httpBackend.expectGET(api + key);
+
+    bottle.get(key).then(function(result){
+      expect(result.data).toEqual(otherData);
+    });
+
+    $httpBackend.flush();
   });
+
 });
