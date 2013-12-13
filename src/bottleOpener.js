@@ -47,7 +47,7 @@ angular.module('bottle.opener', [])
         }
         else if(typeof this.api != 'undefined') {
           url = _formatUrl(this.api, slug);
-          $http.get(url).then(deferred.resolve);
+          $http.get(url).then(deferred.resolve, deferred.reject);
         }
         else {
           deferred.reject({});
