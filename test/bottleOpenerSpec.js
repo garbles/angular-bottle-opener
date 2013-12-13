@@ -1,18 +1,29 @@
 'use strict';
 
 describe('Service: $bottle', function () {
-  var $bottle, $httpBackend, bottle, key, data, otherData, api;
+  var $bottle, $httpBackend, bottle, bottleName,
+  key, data, otherData, api, $bottleProvider;
 
+  bottleName = 'test';
   key = 'key';
   data = {a:1};
   otherData = {b: 1}
   api = 'http://www.example.com/api/';
 
-  beforeEach(module('bottle.opener'));
+  beforeEach(function(){
+    angular.module('test.config', function(){})
+      .config(function(_$bottleProvider_){
+        $bottleProvider = _$bottleProvider_;
+      });
+
+    module('bottle.opener', 'test.config');
+  });
+
 
   beforeEach(inject(function (_$bottle_, _$httpBackend_) {
     $bottle = _$bottle_;
-    bottle = $bottle('test');
+
+    bottle = $bottle(bottleName);
     bottle.clean();
 
     $httpBackend = _$httpBackend_;
@@ -26,7 +37,7 @@ describe('Service: $bottle', function () {
    });
 
   it('initializes local storage', function () {
-    expect(localStorage.getItem('test')).toBe('{}');
+    expect(localStorage.getItem(bottleName)).toBe('{}');
   });
 
   it('stores and retrieves local storage data', function() {
@@ -61,8 +72,8 @@ describe('Service: $bottle', function () {
   it('calls an api if .api', function() {
     var resultData;
     var key = 'success';
-    bottle.api = api + ':slug';
 
+    $bottleProvider.setApiUrl(bottleName, api + ':slug');
     $httpBackend.expectGET(api + key);
 
     bottle.get(key).then(function(result){
@@ -77,7 +88,7 @@ describe('Service: $bottle', function () {
   it('calls an api if .api', function() {
     var resultStatus;
     var key = 'failure';
-    bottle.api = api + ':slug';
+    $bottleProvider.setApiUrl(bottleName, api + ':slug');
 
     bottle.get(key).then(function(result) {
       resultStatus = result.status;

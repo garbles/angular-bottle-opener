@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Service: $bottle', function () {
+xdescribe('Service: $bottle', function () {
   var $expiryEvaluator;
 
   beforeEach(module('bottle.opener'));

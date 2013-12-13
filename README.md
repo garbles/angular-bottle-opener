@@ -50,10 +50,12 @@ in your localStorage, it will attempt to fetch it from the server.
 
 ```javascript
 angular.module('app')
-  .controller('ctrl', function($scope, $bottle) {
-
+  .config(function($bottleProvider){
     // :slug param required
-    var bottle = $bottle('example', {'api': 'http://www.example.com/api/:slug'});
+    $bottleProvider.setApi('example',  'http://www.example.com/api/:slug');
+  })
+  .controller('ctrl', function($scope, $bottle) {
+    var bottle = $bottle('example');
 
     // will create an http request for http://www.example.com/api/other-bacon
     bottle.get('other-bacon').then(function(result) {

@@ -1,8 +1,25 @@
 'use strict';
 
+// TODO:
+// - Make the first argument of $bottle the key and the second options
+// - Throw an exception if key isn't defined
+// - Create a 'expire' method which will clear entries if they don't meet some criteria
+// - Handle api call fails
+// - Add cache busting to url fields?
+
 angular.module('bottle.opener', [])
   .provider('$bottle', function () {
 
+    // $bottleProvider
+    var app = this;
+
+    this.apiUrls = {};
+
+    this.setApiUrl = function(key, api) {
+      app.apiUrls[key] = api;
+    }
+
+    // private
     function _formatUrl(apiUrl, slug) {
       return apiUrl.split(':slug').join(slug);
     }
@@ -16,13 +33,11 @@ angular.module('bottle.opener', [])
       return data;
     }
 
+    // $bottle
     this.$get = ['$http', '$q', function($http, $q) {
 
-      function Bottle(key, opts) {
-        opts || (opts = {});
-
+      function Bottle(key) {
         this.key = key;
-        this.api = opts.api;
         this.storage = angular.fromJson(_get(this.key) || _set(this.key, '{}'));
       }
 
@@ -38,15 +53,17 @@ angular.module('bottle.opener', [])
       }
 
       Bottle.prototype.get = function(slug) {
-        var data, deferred, url;
+        var data, deferred, url, apiUrl;
 
+        apiUrl = app.apiUrls[this.key];
         deferred = $q.defer();
 
         if (data = this.storage[slug]) {
           deferred.resolve({data: data});
         }
-        else if(typeof this.api != 'undefined') {
-          url = _formatUrl(this.api, slug);
+        else if(typeof apiUrl != 'undefined') {
+
+          url = _formatUrl(apiUrl, slug);
           $http.get(url).then(deferred.resolve, deferred.reject);
         }
         else {
