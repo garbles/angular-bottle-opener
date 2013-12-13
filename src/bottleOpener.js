@@ -4,7 +4,6 @@
 // - Make the first argument of $bottle the key and the second options
 // - Throw an exception if key isn't defined
 // - Create a 'expire' method which will clear entries if they don't meet some criteria
-// - Handle api call fails
 // - Add cache busting to url fields?
 
 angular.module('bottle.opener', [])
@@ -13,9 +12,10 @@ angular.module('bottle.opener', [])
     // $bottleProvider
     var app = this;
 
-    this.apiUrls = {};
+    app.bottleCache = {};
+    app.apiUrls = {};
 
-    this.setApiUrl = function(key, api) {
+    app.setApiUrl = function(key, api) {
       app.apiUrls[key] = api;
     }
 
@@ -38,15 +38,18 @@ angular.module('bottle.opener', [])
 
       function Bottle(key) {
         this.key = key;
-        this.storage = angular.fromJson(_get(this.key) || _set(this.key, '{}'));
+
+        if(typeof app.bottleCache[key] == 'undefined') {
+          app.bottleCache[key] = angular.fromJson(_get(key) || _set(key, '{}'));
+        }
       }
 
       Bottle.prototype.all = function() {
-        return this.storage;
+        return app.bottleCache[this.key];
       }
 
       Bottle.prototype.clean = function() {
-        this.storage = angular.fromJson('{}');
+        app.bottleCache[this.key] = angular.fromJson('{}');
         _set(this.key, '{}');
 
         return this;
@@ -58,11 +61,10 @@ angular.module('bottle.opener', [])
         apiUrl = app.apiUrls[this.key];
         deferred = $q.defer();
 
-        if (data = this.storage[slug]) {
+        if (data = app.bottleCache[this.key][slug]) {
           deferred.resolve({data: data});
         }
         else if(typeof apiUrl != 'undefined') {
-
           url = _formatUrl(apiUrl, slug);
           $http.get(url).then(deferred.resolve, deferred.reject);
         }
@@ -74,8 +76,8 @@ angular.module('bottle.opener', [])
       }
 
       Bottle.prototype.set = function(slug, json) {
-        this.storage[slug] = json;
-        _set(this.key, angular.toJson(this.storage));
+        app.bottleCache[this.key][slug] = json;
+        _set(this.key, angular.toJson(app.bottleCache[this.key]));
 
         return this;
       }
