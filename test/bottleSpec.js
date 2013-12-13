@@ -102,4 +102,16 @@ describe('Service: $bottle', function () {
     // guaranteed to be checked.
     expect(resultStatus).toBe(404);
   });
+
+  it('sets a bottle cache at the app level', function() {
+    var resultData, bottle2;
+
+    bottle2 = $bottle(bottleName);
+
+    bottle.set(key, data);
+
+    bottle2.get(key).then(function(result){
+      expect(result.data).toBe(data);
+    });
+  });
 });
