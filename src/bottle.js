@@ -1,9 +1,7 @@
 'use strict';
 
 // TODO:
-// - Make the first argument of $bottle the key and the second options
 // - Throw an exception if key isn't defined
-// - Create a 'expire' method which will clear entries if they don't meet some criteria
 // - Add cache busting to url fields?
 
 angular.module('bottle.opener', [])
