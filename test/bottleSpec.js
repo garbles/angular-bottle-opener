@@ -114,4 +114,13 @@ describe('Service: $bottle', function () {
       expect(result.data).toBe(data);
     });
   });
+
+  it('returns the entire bottle if the slug is not specified', function() {
+    bottle.set(key, data);
+    bottle.set('other-' + key, otherData);
+
+    bottle.get().then(function(result){
+      expect(result.data).toEqual({"key": data, "other-key": otherData});
+    });
+  });
 });

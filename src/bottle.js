@@ -21,35 +21,19 @@ angular.module('bottle.opener', [])
       return apiUrl.split(':slug').join(slug);
     }
 
-    function _get(key) {
-      return localStorage.getItem(key);
-    }
-
-    function _set(key, data) {
-      localStorage.setItem(key, data);
-      return data;
-    }
-
     // $bottle
     this.$get = ['$http', '$q', '$bottleCache', function($http, $q, $bottleCache) {
 
       function Bottle(key) {
         this.key = key;
-
-        if(typeof $bottleCache[key] == 'undefined') {
-          $bottleCache[key] = angular.fromJson(_get(key) || _set(key, '{}'));
-        }
       }
 
       Bottle.prototype.all = function() {
-        return $bottleCache[this.key];
+        return $bottleCache.get(this.key);
       }
 
       Bottle.prototype.clean = function() {
-        $bottleCache[this.key] = angular.fromJson('{}');
-        _set(this.key, '{}');
-
-        return this;
+        return this.set(undefined, angular.fromJson('{}'));
       }
 
       Bottle.prototype.get = function(slug) {
@@ -58,7 +42,7 @@ angular.module('bottle.opener', [])
         apiUrl = app.apiUrls[this.key];
         deferred = $q.defer();
 
-        if (data = $bottleCache[this.key][slug]) {
+        if (data = $bottleCache.get(this.key, slug)) {
           deferred.resolve({data: data});
         }
         else if(typeof apiUrl != 'undefined') {
@@ -73,14 +57,12 @@ angular.module('bottle.opener', [])
       }
 
       Bottle.prototype.set = function(slug, json) {
-        $bottleCache[this.key][slug] = json;
-        _set(this.key, angular.toJson($bottleCache[this.key]));
-
+        $bottleCache.set(this.key, slug, json);
         return this;
       }
 
-      return function(key, opts) {
-        return new Bottle(key, opts);
+      return function(key) {
+        return new Bottle(key);
       }
     }];
 

@@ -13,9 +13,10 @@ angular.module('bottle.opener')
       // make variable substitutions
     }
 
-    this.$get = [function() {
+    this.$get = ['$bottleCache', function($bottleCache) {
+      return function(key, conditionString) {
+        var bottle = $bottleCache[key];
 
-      return function(storage, conditionString) {
       }
     }];
 
