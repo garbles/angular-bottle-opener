@@ -1,7 +1,7 @@
 'use strict';
 
-xdescribe('Service: $bottle', function () {
-  var $expiryEvaluator;
+describe('Service: $expiryEvaluator', function () {
+  var $expiryEvaluator, $provide;
 
   beforeEach(module('bottle.opener'));
 
@@ -9,11 +9,13 @@ xdescribe('Service: $bottle', function () {
     $expiryEvaluator = _$expiryEvaluator_;
   }));
 
-  function _sharedExample(a, b, conditional) {
+  function _sharedExample(a, b, condition) {
     var storage, result;
 
     storage = {a: a, b: b};
-    result = $expiryEvaluator(storage, conditional);
+
+    result = $expiryEvaluator(storage, condition);
+
     expect(result).toEqual({a: a});
   };
 
@@ -29,7 +31,7 @@ xdescribe('Service: $bottle', function () {
     _sharedExample(
       {expires_at: 'Dec 20 2013'},
       {expires_at: 'Dec 10 2013'},
-      "new Date(:expires_at) < new Date('Dec 15 2013')"
+      "new Date(':expires_at') < new Date('Dec 15 2013')"
     );
   });
 
@@ -37,7 +39,7 @@ xdescribe('Service: $bottle', function () {
     _sharedExample(
       {expires_at: 'Dec 20 2099'},
       {expires_at: 'Dec 10 2000'},
-      "new Date(:expires_at) < :now"
+      "new Date(':expires_at') < :now"
     )
   });
 
