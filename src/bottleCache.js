@@ -16,19 +16,19 @@ angular.module('bottle.opener')
       return new function() {
 
         this.get = function(key, slug) {
-          if(typeof cache[key] == 'undefined') {
+          if(angular.isDefined(cache[key])) {
             cache[key] = angular.fromJson(_get(key) || _set(key, '{}'));
           }
 
-          if(typeof slug != 'undefined') {
+          if(angular.isDefined(slug)) {
             return cache[key][slug];
           } else {
             return cache[key];
           }
         };
 
-        this.set = function(key, slug, json) {
-          if(typeof slug != 'undefined') {
+        this.set = function(key, json, slug) {
+          if(angular.isDefined(slug)) {
             cache[key][slug] = json;
           } else {
             cache[key] = json;

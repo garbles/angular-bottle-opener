@@ -15,7 +15,7 @@ angular.module('bottle.opener')
 
     this.$get = ['$bottleCache', function($bottleCache) {
       return function(key, conditionString) {
-        var bottle = $bottleCache[key];
+        var bottle = $bottleCache.get(key);
 
       }
     }];

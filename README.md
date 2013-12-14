@@ -26,7 +26,7 @@ angular.module('app')
     // find or create a bottle with the name `example`
     var bottle = $bottle('example');
 
-    bottle.set('bacon', $scope.data); // => {'test': 'data'}
+    bottle.set($scope.data, 'bacon'); // => {'test': 'data'}
   });
 ```
 

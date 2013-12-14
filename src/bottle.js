@@ -33,7 +33,7 @@ angular.module('bottle.opener', [])
       }
 
       Bottle.prototype.clean = function() {
-        return this.set(undefined, angular.fromJson('{}'));
+        return this.set(angular.fromJson('{}'));
       }
 
       Bottle.prototype.get = function(slug) {
@@ -45,7 +45,7 @@ angular.module('bottle.opener', [])
         if (data = $bottleCache.get(this.key, slug)) {
           deferred.resolve({data: data});
         }
-        else if(typeof apiUrl != 'undefined') {
+        else if(angular.isString(apiUrl)) {
           url = _formatUrl(apiUrl, slug);
           $http.get(url).then(deferred.resolve, deferred.reject);
         }
@@ -56,8 +56,8 @@ angular.module('bottle.opener', [])
         return deferred.promise;
       }
 
-      Bottle.prototype.set = function(slug, json) {
-        $bottleCache.set(this.key, slug, json);
+      Bottle.prototype.set = function(json, slug) {
+        $bottleCache.set(this.key, json, slug);
         return this;
       }
 

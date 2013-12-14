@@ -41,7 +41,7 @@ describe('Service: $bottle', function () {
   });
 
   it('stores and retrieves local storage data', function() {
-    bottle.set(key, data);
+    bottle.set(data, key);
 
     bottle.get(key).then(function(result) {
       expect(result.data).toEqual(data);
@@ -56,7 +56,7 @@ describe('Service: $bottle', function () {
   });
 
   it('allows you to chain commands together', function() {
-    bottle.set(key, data);
+    bottle.set(data, key);
 
     bottle.get(key).then(function(result) {
       expect(result.data).toEqual(data);
@@ -64,9 +64,9 @@ describe('Service: $bottle', function () {
   });
 
   it('returns all of the data from the bottle', function() {
-    bottle.set(key, data).set('other_key', data);
+    bottle.set(data, key).set(data, 'other-key');
 
-    expect(bottle.all()).toEqual({"key": data, "other_key": data});
+    expect(bottle.all()).toEqual({"key": data, "other-key": data});
   });
 
   it('calls an api if .api', function() {
@@ -108,16 +108,16 @@ describe('Service: $bottle', function () {
 
     bottle2 = $bottle(bottleName);
 
-    bottle.set(key, data);
+    bottle.set(data, key);
 
     bottle2.get(key).then(function(result){
-      expect(result.data).toBe(data);
+      expect(result.data).toEqual(data);
     });
   });
 
   it('returns the entire bottle if the slug is not specified', function() {
-    bottle.set(key, data);
-    bottle.set('other-' + key, otherData);
+    bottle.set(data, key);
+    bottle.set(otherData, 'other-' + key);
 
     bottle.get().then(function(result){
       expect(result.data).toEqual({"key": data, "other-key": otherData});
