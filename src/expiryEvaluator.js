@@ -24,7 +24,7 @@ angular.module('bottle.opener')
       }
     }
 
-    this.$get = ['$bottleCache', function($bottleCache) {
+    this.$get = function() {
 
       function Expiry(storage, condition) {
         this.storage = storage;
@@ -64,6 +64,6 @@ angular.module('bottle.opener')
         var expiry = new Expiry(storage, condition);
         return expiry.substitute();
       }
-    }];
+    };
 
   });
