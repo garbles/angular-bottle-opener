@@ -4,7 +4,10 @@ Store and retrieve object data from your browser's localStorage with bottleOpene
 Its motivation is an attempt to minimize the number of http requests made to your
 server during a page load by storing non-sensitive, rarely/never-updated data on the client's localStorage.
 
-This library is a work-in-progress.
+### WARNING!!
+
+This library is still in the very very early stages and I'm constantly changing my mind on how it should work.
+Please, if you're interested in trying it out, be prepared for changes!
 
 ## Installing
 
