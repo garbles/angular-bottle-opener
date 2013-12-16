@@ -1,6 +1,6 @@
 {
   "name": "angular-bottle-opener",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "An AngularJS wrapper for localStorage",
   "main": "./build/bottle.js",
   "directories": {
