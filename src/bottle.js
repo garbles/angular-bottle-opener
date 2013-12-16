@@ -4,7 +4,7 @@
 // - Throw an exception if key isn't defined
 // - Add cache busting to url fields?
 
-angular.module('bottle.opener', [])
+angular.module('bottle.opener', ['crockford.monad'])
   .provider('$bottle', function () {
 
     // $bottleProvider
@@ -22,27 +22,15 @@ angular.module('bottle.opener', [])
     }
 
     // $bottle
-    this.$get = ['$http', '$q', '$bottleCache', function($http, $q, $bottleCache) {
+    this.$get = ['$http', '$q', '$bottleCache', '$monad', function($http, $q, $bottleCache, $monad) {
 
-      function Bottle(key) {
-        this.key = key;
-      }
-
-      Bottle.prototype.all = function() {
-        return $bottleCache.get(this.key);
-      }
-
-      Bottle.prototype.clean = function() {
-        return this.set(angular.fromJson('{}'));
-      }
-
-      Bottle.prototype.get = function(slug) {
+      function get(key, slug) {
         var data, deferred, url, apiUrl;
 
-        apiUrl = app.apiUrls[this.key];
+        apiUrl = app.apiUrls[key];
         deferred = $q.defer();
 
-        if (data = $bottleCache.get(this.key, slug)) {
+        if (data = $bottleCache.get(key, slug)) {
           deferred.resolve({data: data});
         }
         else if(angular.isString(apiUrl)) {
@@ -56,14 +44,16 @@ angular.module('bottle.opener', [])
         return deferred.promise;
       }
 
-      Bottle.prototype.set = function(json, slug) {
-        $bottleCache.set(this.key, json, slug);
-        return this;
+      function clean(key) {
+        $bottleCache.set(key, angular.fromJson('{}'));
       }
 
-      return function(key) {
-        return new Bottle(key);
-      }
+      return $monad()
+        .lift('clean', clean)
+        .lift_value('get', get)
+
+        .lift('set', $bottleCache.set)
+        .lift_value('all', $bottleCache.get)
     }];
 
   });

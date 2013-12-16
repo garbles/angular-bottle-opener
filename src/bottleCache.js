@@ -12,7 +12,7 @@ angular.module('bottle.opener')
       return data;
     }
 
-    this.$get = [function() {
+    this.$get = ['$expiryEvaluator', function($expiryEvaluator) {
       return new function() {
 
         this.get = function(key, slug) {
@@ -35,6 +35,7 @@ angular.module('bottle.opener')
           }
 
           _set(key, angular.toJson(cache[key]));
+          return key;
         };
       }
     }];

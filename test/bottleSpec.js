@@ -2,10 +2,10 @@
 
 describe('Service: $bottle', function () {
   var $bottle, $httpBackend, bottle, bottleName,
-  key, data, otherData, api, $bottleProvider;
+  slug, data, otherData, api, $bottleProvider;
 
   bottleName = 'test';
-  key = 'key';
+  slug = 'slug';
   data = {a:1};
   otherData = {b: 1}
   api = 'http://www.example.com/api/';
@@ -41,9 +41,9 @@ describe('Service: $bottle', function () {
   });
 
   it('stores and retrieves local storage data', function() {
-    bottle.set(data, key);
+    bottle.set(data, slug);
 
-    bottle.get(key).then(function(result) {
+    bottle.get(slug).then(function(result) {
       expect(result.data).toEqual(data);
     });
 
@@ -56,27 +56,27 @@ describe('Service: $bottle', function () {
   });
 
   it('allows you to chain commands together', function() {
-    bottle.set(data, key);
+    bottle.set(data, slug);
 
-    bottle.get(key).then(function(result) {
+    bottle.get(slug).then(function(result) {
       expect(result.data).toEqual(data);
     });
   });
 
   it('returns all of the data from the bottle', function() {
-    bottle.set(data, key).set(data, 'other-key');
+    bottle.set(data, slug).set(data, 'other-slug');
 
-    expect(bottle.all()).toEqual({"key": data, "other-key": data});
+    expect(bottle.all()).toEqual({"slug": data, "other-slug": data});
   });
 
   it('calls an api if .api', function() {
     var resultData;
-    var key = 'success';
+    var slug = 'success';
 
     $bottleProvider.setApiUrl(bottleName, api + ':slug');
-    $httpBackend.expectGET(api + key);
+    $httpBackend.expectGET(api + slug);
 
-    bottle.get(key).then(function(result){
+    bottle.get(slug).then(function(result){
       resultData = result.data;
     });
 
@@ -87,10 +87,10 @@ describe('Service: $bottle', function () {
 
   it('calls an api if .api', function() {
     var resultStatus;
-    var key = 'failure';
+    var slug = 'failure';
     $bottleProvider.setApiUrl(bottleName, api + ':slug');
 
-    bottle.get(key).then(function(result) {
+    bottle.get(slug).then(function(result) {
       resultStatus = result.status;
     }, function(result){
       resultStatus = result.status;
@@ -108,19 +108,10 @@ describe('Service: $bottle', function () {
 
     bottle2 = $bottle(bottleName);
 
-    bottle.set(data, key);
+    bottle.set(data, slug);
 
-    bottle2.get(key).then(function(result){
+    bottle2.get(slug).then(function(result){
       expect(result.data).toEqual(data);
-    });
-  });
-
-  it('returns the entire bottle if the slug is not specified', function() {
-    bottle.set(data, key);
-    bottle.set(otherData, 'other-' + key);
-
-    bottle.get().then(function(result){
-      expect(result.data).toEqual({"key": data, "other-key": otherData});
     });
   });
 });

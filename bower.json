@@ -23,7 +23,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": ">= 1.2.2"
+    "angular": ">= 1.2.2",
+    "angular-monad": "*"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.2",
